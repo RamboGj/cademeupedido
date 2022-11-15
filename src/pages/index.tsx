@@ -17,6 +17,8 @@ import * as Slider from '@radix-ui/react-slider'
 
 import { useState } from 'react'
 
+import Cal, { getCalApi } from '@calcom/embed-react'
+
 export default function Home() {
   const [dropdownMenuIsOpen, setDropdownMenuIsOpen] = useState<boolean>(false)
   const [numberOfCourriers, setNumberOfCourriers] = useState<number[]>([0])
@@ -411,6 +413,23 @@ export default function Home() {
     }
   }
 
+  async function callCal() {
+    const cal = await getCalApi()
+
+    if (cal) {
+      cal('ui', {
+        theme: 'light',
+        styles: { branding: { brandColor: '#F87A2C' } },
+      })
+      return (
+        <Cal
+          calLink="cademeupedido/30min"
+          style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+        />
+      )
+    }
+  }
+
   return (
     <>
       <header className="w-screen bg-gradient-to-r from-yellow300 to-yellow500 pt-2 text-yellow900">
@@ -480,7 +499,10 @@ export default function Home() {
                   type="text"
                   className="flex-1 bg-white py-3 px-4 focus:outline-none border-2 border-transparent focus:border-yellow900"
                 />
-                <button className="w-[350px] lg:w-[124px] py-3 px-4 lg:py-0 lg:px-0 font-bold text-yellow500 bg-yellow900 hover:bg-yellow900/80 transition duration-500">
+                <button
+                  onClick={callCal}
+                  className="w-[350px] lg:w-[124px] py-3 px-4 lg:py-0 lg:px-0 font-bold text-yellow500 bg-yellow900 hover:bg-yellow900/80 transition duration-500"
+                >
                   AGENDAR
                 </button>
               </div>
@@ -519,7 +541,7 @@ export default function Home() {
             </h1>
           </div>
         </section>
-        <section className="w-screen mt-24 lg:mt-64 bg-gradient-to-b lg:bg-gradient-to-r from-blue300 to-blue500 py-16">
+        <section className="w-screen mt-24 lg:mt-64 py-16">
           <div className="max-w-[411px] lg:max-w-[1280px] flex flex-col lg:flex-row justify-between items-center mx-auto px-8">
             <div className="flex flex-col gap-2 text-center lg:text-left mb-8 lg:mb-0">
               <h1 className="font-bold text-[28px] lg:text-[42px] max-w-[472px] leading-tight">
